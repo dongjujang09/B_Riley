@@ -27,7 +27,7 @@ namespace B_Riley.BankingApp.Web.Controllers
         // GET: Transfers
         public async Task<IActionResult> Index()
         {
-            return View(await transferRepo.GetAllTransfersAsync());
+            return View(await transferRepo.GetAllAsync());
         }
 
         // GET: Transfers/Details/5
@@ -50,15 +50,13 @@ namespace B_Riley.BankingApp.Web.Controllers
         // GET: Transfers/Create
         public async Task<IActionResult> Create()
         {
-            var allAccount = await accountRepo.GetAllAccountsAsync();
+            var allAccount = await accountRepo.GetAllAsync();
             ViewData["FromAccountId"] = new SelectList(allAccount, "Id", "AccountName");
             ViewData["ToAccountId"] = new SelectList(allAccount, "Id", "AccountName");
             return View();
         }
 
         // POST: Transfers/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("FromAccountId,ToAccountId,Amount,Id")] Transfer transfer)
@@ -75,10 +73,10 @@ namespace B_Riley.BankingApp.Web.Controllers
                     transfer.ToAccountBalance = toAccount.Balance;
                     toAccount.Balance += transfer.Amount;
 
-                    await transferRepo.SaveTransferAsync(transfer);
+                    await transferRepo.InsertOrUpdateAsync(transfer);   // insert transfer
                     
-                    await accountRepo.SaveAccountAsync(fromAccount);
-                    await accountRepo.SaveAccountAsync(toAccount);
+                    await accountRepo.InsertOrUpdateAsync(fromAccount); // update the from-account
+                    await accountRepo.InsertOrUpdateAsync(toAccount);   // update the to-account
 
                     return RedirectToAction(nameof(Index));
                 }
@@ -86,7 +84,7 @@ namespace B_Riley.BankingApp.Web.Controllers
                 ModelState.AddModelError(nameof(transfer.Amount), "The From Account does not have sufficient funds.");
             }
 
-            var allAccount = await accountRepo.GetAllAccountsAsync();
+            var allAccount = await accountRepo.GetAllAsync();
             ViewData["FromAccountId"] = new SelectList(allAccount, "Id", "AccountName", transfer.FromAccountId);
             ViewData["ToAccountId"] = new SelectList(allAccount, "Id", "AccountName", transfer.ToAccountId);
             return View(transfer);

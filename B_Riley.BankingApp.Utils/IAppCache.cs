@@ -3,7 +3,6 @@
     public interface IAppCache
     {
         T Get<T>(string key);
-        void Set<T>(string key, T value, DateTimeOffset absoluteExpiration);
         void Set<T>(string key, T value);
         void Remove(string key);
         Task<T> GetOrCreateAsync<T>(string key, Func<Task<T>> func);

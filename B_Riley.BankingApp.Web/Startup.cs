@@ -16,16 +16,15 @@ namespace B_Riley.BankingApp.Web
     public class Startup
     {
         private string contentRootPath = "";
+        private IConfiguration configuration { get; }
+        private IWebHostEnvironment environment { get; }
 
         public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
-            Configuration = configuration;
-            Environment = environment;
+            this.configuration = configuration;
+            this.environment = environment;
             contentRootPath = environment.ContentRootPath;
         }
-
-        public IConfiguration Configuration { get; }
-        public IWebHostEnvironment Environment { get; }
 
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -34,7 +33,7 @@ namespace B_Riley.BankingApp.Web
             services.AddResponseCaching();
             services.AddControllersWithViews();
                         
-            string connectionString = Configuration.GetConnectionString("DefaultConnection");
+            string connectionString = configuration.GetConnectionString("DefaultConnection");
             if (connectionString.Contains("%CONTENTROOTPATH%"))
             {
                 connectionString = connectionString.Replace("%CONTENTROOTPATH%", contentRootPath);

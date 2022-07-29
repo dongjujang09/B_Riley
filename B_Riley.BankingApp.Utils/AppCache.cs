@@ -23,14 +23,9 @@ namespace B_Riley.BankingApp.Utils
             return default;
         }
 
-        public void Set<T>(string key, T value, DateTimeOffset absoluteExpiration)
-        {
-            memoryCache.Set(key, value, absoluteExpiration);
-        }
-
         public void Set<T>(string key, T value)
         {
-            Set(key, value, DateTimeOffset.Now.AddSeconds(cacheTimespan));
+            memoryCache.Set(key, value, DateTimeOffset.Now.AddSeconds(cacheTimespan));
         }
 
         public void Remove(string key)

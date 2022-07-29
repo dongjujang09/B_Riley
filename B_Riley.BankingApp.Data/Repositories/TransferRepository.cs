@@ -17,7 +17,7 @@ namespace B_Riley.BankingApp.Data.Repositories
             this.appCache = appCache;
         }
 
-        public async Task<IEnumerable<Transfer>> GetAllTransfersAsync()
+        public override async Task<IEnumerable<Transfer>> GetAllAsync()
         {
             var accounts = await appCache.GetOrCreateAsync(CACHEKEY_ALLTRANSFERS, () =>
             {
@@ -56,7 +56,7 @@ namespace B_Riley.BankingApp.Data.Repositories
         }
 
 
-        public async Task SaveTransferAsync(Transfer transfer)
+        public override async Task<Transfer?> InsertOrUpdateAsync(Transfer transfer)
         {
             if (transfer == null) throw new ArgumentNullException(nameof(transfer));
 
@@ -75,6 +75,8 @@ namespace B_Riley.BankingApp.Data.Repositories
             var cacheKey = string.Format(CACHEKEY_TRANSFER, transfer.Id);
             appCache.Remove(cacheKey);
             appCache.Remove(CACHEKEY_ALLTRANSFERS);  // remove cache to refresh
+
+            return transfer;
         }
 
         public override void Delete(Transfer transfer)

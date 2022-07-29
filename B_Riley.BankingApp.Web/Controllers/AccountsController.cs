@@ -25,7 +25,7 @@ namespace B_Riley.BankingApp.Web.Controllers
         // GET: Accounts
         public async Task<IActionResult> Index()
         {
-              return View(await accountRepo.GetAllAccountsAsync());
+              return View(await accountRepo.GetAllAsync());
         }
 
         // GET: Accounts/Details/5
@@ -60,7 +60,7 @@ namespace B_Riley.BankingApp.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                await accountRepo.SaveAccountAsync(account);
+                await accountRepo.InsertOrUpdateAsync(account);
                 return RedirectToAction(nameof(Index));
             }
             return View(account);
@@ -83,8 +83,6 @@ namespace B_Riley.BankingApp.Web.Controllers
         }
 
         // POST: Accounts/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("AccountName,Balance,DateCreated,DateModified,Id")] Account account)
@@ -98,7 +96,7 @@ namespace B_Riley.BankingApp.Web.Controllers
             {
                 try
                 {
-                    await accountRepo.SaveAccountAsync(account);
+                    await accountRepo.InsertOrUpdateAsync(account);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
