@@ -1,0 +1,54 @@
+﻿@model B_Riley.BankingApp.Models.Entities.Transfer
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Transfer</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-3">
+            @Html.DisplayNameFor(model => model.FromAccount)
+        </dt>
+        <dd class = "col-sm-9">
+            @Html.DisplayFor(model => model.FromAccount.AccountName)
+        </dd>
+        <dt class = "col-sm-3">
+            @Html.DisplayNameFor(model => model.ToAccount)
+        </dt>
+        <dd class = "col-sm-9">
+            @Html.DisplayFor(model => model.ToAccount.AccountName)
+        </dd>
+        <dt class = "col-sm-3">
+            @Html.DisplayNameFor(model => model.Amount)
+        </dt>
+        <dd class = "col-sm-9">
+            @Html.DisplayFor(model => model.Amount)
+        </dd>
+        <dt class = "col-sm-3">
+            @Html.DisplayNameFor(model => model.FromAccountBalance)
+        </dt>
+        <dd class = "col-sm-9">
+            @Html.DisplayFor(model => model.FromAccountBalance)
+        </dd>
+        <dt class = "col-sm-3">
+            @Html.DisplayNameFor(model => model.ToAccountBalance)
+        </dt>
+        <dd class = "col-sm-9">
+            @Html.DisplayFor(model => model.ToAccountBalance)
+        </dd>
+        <dt class = "col-sm-3">
+            @Html.DisplayNameFor(model => model.TransactionTime)
+        </dt>
+        <dd class = "col-sm-9">
+            @Html.DisplayFor(model => model.TransactionTime)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

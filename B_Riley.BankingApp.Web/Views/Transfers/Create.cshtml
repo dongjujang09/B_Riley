@@ -1,0 +1,69 @@
+﻿@model Transfer
+@{
+    ViewData["Title"] = "Transfer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>Transfer</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" class="form-inline">
+            <div class="form-group">
+                <label asp-for="FromAccountId" class="control-label mr-1"></label>
+                <select asp-for="FromAccountId" class="form-control mr-3" asp-items="ViewBag.FromAccountId">
+                    <option disabled selected value="0">- Select -</option>
+                </select>
+                    
+                <label asp-for="ToAccountId" class="control-label mr-1"></label>
+                <select asp-for="ToAccountId" class="form-control mr-3" asp-items="ViewBag.ToAccountId">
+                    <option disabled selected value="0">- Select -</option>
+                </select>
+                    
+                <label asp-for="Amount" class="control-label mr-1"></label>
+                <input asp-for="Amount" class="form-control mr-2" />
+                    
+                <input type="submit" value="Transfer" class="btn btn-outline-secondary ml-1" />
+            </div>
+            <div class="form-group mt-3">
+                <div asp-validation-summary="All" class="text-danger"></div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="mt-5">
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+    $(function() {
+        var $fromAccountId = $("form #@Html.IdFor(m => m.FromAccountId)");
+        var $toAccountId = $("form #@Html.IdFor(m => m.ToAccountId)");
+
+        $fromAccountId.change(disableSelfTransfer);
+        disableSelfTransfer();
+
+
+        function disableSelfTransfer(){
+            var fromAccountId = $fromAccountId.val();
+            var $toAccountIdOptions = $toAccountId.find("option");
+            
+            $toAccountIdOptions.removeAttr("disabled"); // enable all options
+
+            // disable an option with the selected from-account Id
+            $.each($toAccountIdOptions, function(index) {
+                if (fromAccountId == $(this).val()) {
+                    $(this).attr("disabled", "disabled");
+                }
+            });
+        }
+    });
+    </script>
+}

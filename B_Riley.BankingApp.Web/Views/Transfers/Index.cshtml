@@ -1,0 +1,61 @@
+﻿@model IEnumerable<Transfer>
+
+@{
+    ViewData["Title"] = "All Transactions";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FromAccount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ToAccount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TransactionTime)
+            </th>
+            <th>
+                Amount debited
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FromAccountBalance)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ToAccountBalance)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FromAccount.AccountName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ToAccount.AccountName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TransactionTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Amount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FromAccountBalance)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ToAccountBalance)
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
