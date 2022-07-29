@@ -17,6 +17,9 @@ namespace B_Riley.BankingApp.Models.Entities
         public double Balance { get; set; }
 
 
+        public bool IsDeleted { get; set; }
+
+
         [DisplayFormat(DataFormatString = "{0:MM-dd-yyyy HH:mm:ss}")]
         public DateTime DateCreated { get; set; }
 

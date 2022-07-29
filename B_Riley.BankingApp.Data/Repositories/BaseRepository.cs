@@ -52,7 +52,7 @@ namespace B_Riley.BankingApp.Data.Repositories
             if (entity.Id < 0) throw new ArgumentOutOfRangeException(nameof(entity.Id));
 
             Context.Remove(entity);
-            SaveChanges();
+            SaveChangesAsync();
         }
     }
 }

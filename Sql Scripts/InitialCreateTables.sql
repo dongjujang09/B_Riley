@@ -42,3 +42,16 @@ GO
 COMMIT;
 GO
 
+BEGIN TRANSACTION;
+GO
+
+ALTER TABLE [Accounts] ADD [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit);
+GO
+
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20220729154354_AddIsDeletedToAccount', N'6.0.7');
+GO
+
+COMMIT;
+GO
+

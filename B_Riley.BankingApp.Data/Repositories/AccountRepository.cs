@@ -28,7 +28,7 @@ namespace B_Riley.BankingApp.Data.Repositories
             // try to get data from cache. if not, call database
             var accounts = await appCache.GetOrCreateAsync(CACHEKEY_ALLACCOUNTS, () =>
             {
-                return GetQueryable().ToListAsync();
+                return GetQueryable().Where(account => !account.IsDeleted).ToListAsync();
             });
             return accounts;
         }
@@ -56,7 +56,7 @@ namespace B_Riley.BankingApp.Data.Repositories
             {
                 account = await appCache.GetOrCreateAsync(cacheKey, () =>
                 {
-                    return Context.Accounts.FirstOrDefaultAsync(account => account.Id == id);
+                    return Context.Accounts.FirstOrDefaultAsync(account => !account.IsDeleted && account.Id == id);
                 });
             }
             return account;
@@ -69,6 +69,8 @@ namespace B_Riley.BankingApp.Data.Repositories
 
             var now = DateTime.Now;
             account.DateModified = now;
+            account.IsDeleted = false;
+
             if (account.Id == 0) // new
             {
                 account.DateCreated = now;
@@ -79,7 +81,7 @@ namespace B_Riley.BankingApp.Data.Repositories
                 SetAsUpdate(account);
             }
 
-            await Context.SaveChangesAsync();
+            await SaveChangesAsync();
 
             var cacheKey = string.Format(CACHEKEY_ACCOUNT, account.Id);
             appCache.Remove(cacheKey);
@@ -88,12 +90,14 @@ namespace B_Riley.BankingApp.Data.Repositories
             return account;
         }
 
-        public override void Delete(Account account)
+        public async Task MarkAsDeletedAsync(Account account)
         {
             if (account == null) throw new ArgumentNullException(nameof(account));
             if (account.Id < 0) throw new ArgumentOutOfRangeException(nameof(account.Id));
 
-            base.Delete(account);
+            account.IsDeleted = true;
+            SetAsUpdate(account);
+            await SaveChangesAsync();
 
             var cacheKey = string.Format(CACHEKEY_ACCOUNT, account.Id);
             appCache.Remove(cacheKey);

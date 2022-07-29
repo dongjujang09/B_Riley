@@ -125,7 +125,7 @@ namespace B_Riley.BankingApp.Web.Controllers
             var account = await accountRepo.FindAsync(id);
             if (account != null)
             {
-                accountRepo.Delete(account);
+                await accountRepo.MarkAsDeletedAsync(account);
             }
             
             return RedirectToAction(nameof(Index));
