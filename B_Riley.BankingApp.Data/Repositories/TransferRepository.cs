@@ -12,13 +12,15 @@ namespace B_Riley.BankingApp.Data.Repositories
         private readonly IAppCache appCache;
 
 
-        public TransferRepository(BankingAppContext context, IAppCache appCache) : base(context)
+        public TransferRepository(BankingAppContext context, IAppCache appCache) 
+            : base(context)
         {
             this.appCache = appCache;
         }
 
         public override async Task<IEnumerable<Transfer>> GetAllAsync()
         {
+            // try to get data from cache. if not, call database
             var accounts = await appCache.GetOrCreateAsync(CACHEKEY_ALLTRANSFERS, () =>
             {
                 return GetQueryable()
@@ -39,10 +41,14 @@ namespace B_Riley.BankingApp.Data.Repositories
             if (allTransfers != null)
             {
                 transfer = allTransfers.FirstOrDefault(transfer => transfer.Id == id);
-                appCache.Set(cacheKey, transfer);
             }
 
-            if (transfer == null)
+            // store it in cache then return
+            if (transfer != null)
+            {
+                appCache.Set(cacheKey, transfer);
+            }
+            else
             {
                 transfer = await appCache.GetOrCreateAsync(cacheKey, () =>
                 {
@@ -72,20 +78,25 @@ namespace B_Riley.BankingApp.Data.Repositories
 
             await Context.SaveChangesAsync();
 
+            // remove cache to refresh
             var cacheKey = string.Format(CACHEKEY_TRANSFER, transfer.Id);
             appCache.Remove(cacheKey);
-            appCache.Remove(CACHEKEY_ALLTRANSFERS);  // remove cache to refresh
+            appCache.Remove(CACHEKEY_ALLTRANSFERS);
 
             return transfer;
         }
 
         public override void Delete(Transfer transfer)
         {
+            if (transfer == null) throw new ArgumentNullException(nameof(transfer));
+            if (transfer.Id < 0) throw new ArgumentOutOfRangeException(nameof(transfer.Id));
+
             base.Delete(transfer);
 
+            // remove cache to refresh
             var cacheKey = string.Format(CACHEKEY_TRANSFER, transfer.Id);
             appCache.Remove(cacheKey);
-            appCache.Remove(CACHEKEY_ALLTRANSFERS);  // remove cache to refresh
+            appCache.Remove(CACHEKEY_ALLTRANSFERS);
         }
     }
 }

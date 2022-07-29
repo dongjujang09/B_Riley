@@ -2,7 +2,10 @@
 
 namespace B_Riley.BankingApp.Utils
 {
-
+    /// <summary>
+    /// Wrapper class for Cache
+    /// the cache object can be changed to IDistributedCache for multi-server environment
+    /// </summary>
     public class AppCache : IAppCache
     {
         private readonly int cacheTimespan;         // in sec

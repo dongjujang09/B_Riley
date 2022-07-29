@@ -1,10 +1,5 @@
 ﻿using B_Riley.BankingApp.Models.Entities.Base;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace B_Riley.BankingApp.Data.Repositories
 {
@@ -29,9 +24,16 @@ namespace B_Riley.BankingApp.Data.Repositories
 
 
         public virtual async Task<IEnumerable<T>> GetAllAsync() => await GetQueryable().ToListAsync();
-        public virtual async Task<T?> FindAsync(int id) => await Context.Set<T>().FindAsync(id);
+        public virtual async Task<T?> FindAsync(int id)
+        {
+            if (id < 0) throw new ArgumentOutOfRangeException(nameof(id));
+            
+            return await Context.Set<T>().FindAsync(id);
+        }
         public virtual async Task<T?> InsertOrUpdateAsync(T entity)
         {
+            if (entity == null) throw new ArgumentNullException(nameof(entity));
+
             if (entity.Id == 0)
             {
                 await Context.Set<T>().AddAsync(entity);
@@ -46,6 +48,9 @@ namespace B_Riley.BankingApp.Data.Repositories
 
         public virtual void Delete(T entity)
         {
+            if (entity == null) throw new ArgumentNullException(nameof(entity));
+            if (entity.Id < 0) throw new ArgumentOutOfRangeException(nameof(entity.Id));
+
             Context.Remove(entity);
             SaveChanges();
         }

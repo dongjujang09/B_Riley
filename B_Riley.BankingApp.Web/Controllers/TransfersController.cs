@@ -89,11 +89,5 @@ namespace B_Riley.BankingApp.Web.Controllers
             ViewData["ToAccountId"] = new SelectList(allAccount, "Id", "AccountName", transfer.ToAccountId);
             return View(transfer);
         }
-
-
-        private bool TransferExists(int id)
-        {
-          return transferRepo.GetQueryable().Any(e => e.Id == id);
-        }
     }
 }

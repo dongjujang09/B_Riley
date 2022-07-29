@@ -94,21 +94,7 @@ namespace B_Riley.BankingApp.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    await accountRepo.InsertOrUpdateAsync(account);
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!AccountExists(account.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                await accountRepo.InsertOrUpdateAsync(account);
                 return RedirectToAction(nameof(Index));
             }
             return View(account);

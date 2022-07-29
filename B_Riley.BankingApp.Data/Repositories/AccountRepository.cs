@@ -17,13 +17,15 @@ namespace B_Riley.BankingApp.Data.Repositories
         private readonly IAppCache appCache;
 
 
-        public AccountRepository(BankingAppContext context, IAppCache appCache): base(context)
+        public AccountRepository(BankingAppContext context, IAppCache appCache)
+            : base(context)
         {
             this.appCache = appCache;
         }
 
         public override async Task<IEnumerable<Account>> GetAllAsync()
         {
+            // try to get data from cache. if not, call database
             var accounts = await appCache.GetOrCreateAsync(CACHEKEY_ALLACCOUNTS, () =>
             {
                 return GetQueryable().ToListAsync();
@@ -33,6 +35,8 @@ namespace B_Riley.BankingApp.Data.Repositories
 
         public override async Task<Account?> FindAsync(int id)
         {
+            if (id < 0) throw new ArgumentOutOfRangeException(nameof(id));
+
             var cacheKey = string.Format(CACHEKEY_ACCOUNT, id);
             Account? account = null;
 
@@ -41,10 +45,14 @@ namespace B_Riley.BankingApp.Data.Repositories
             if (allAccounts != null)
             {
                 account = allAccounts.FirstOrDefault(account => account.Id == id);
-                appCache.Set(cacheKey, account);
             }
 
-            if (account == null)
+            // store it in cache then return
+            if (account != null)
+            {
+                appCache.Set(cacheKey, account);
+            }
+            else
             {
                 account = await appCache.GetOrCreateAsync(cacheKey, () =>
                 {
@@ -82,6 +90,9 @@ namespace B_Riley.BankingApp.Data.Repositories
 
         public override void Delete(Account account)
         {
+            if (account == null) throw new ArgumentNullException(nameof(account));
+            if (account.Id < 0) throw new ArgumentOutOfRangeException(nameof(account.Id));
+
             base.Delete(account);
 
             var cacheKey = string.Format(CACHEKEY_ACCOUNT, account.Id);

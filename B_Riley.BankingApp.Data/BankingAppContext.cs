@@ -16,13 +16,13 @@ namespace B_Riley.BankingApp.Data
             modelBuilder
                 .Entity<Transfer>()
                 .HasOne(t => t.FromAccount)
-                .WithMany()
+                .WithOne()
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder
                 .Entity<Transfer>()
                 .HasOne(t => t.ToAccount)
-                .WithMany()
+                .WithOne()
                 .OnDelete(DeleteBehavior.NoAction);
         }
 

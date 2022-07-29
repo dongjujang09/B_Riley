@@ -46,10 +46,10 @@ namespace B_Riley.BankingApp.Models.Entities
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             if (FromAccountId < 1)
-                yield return new ValidationResult("Invalid From Account.", new[] { nameof(FromAccountId) });
+                yield return new ValidationResult("Invalid From-Account.", new[] { nameof(FromAccountId) });
 
             if (ToAccountId < 1)
-                yield return new ValidationResult("Invalid To Account.", new[] { nameof(ToAccountId) });
+                yield return new ValidationResult("Invalid To-Account.", new[] { nameof(ToAccountId) });
 
             if (FromAccountId == ToAccountId)
                 yield return new ValidationResult("Self Transfer is not allowed.", new[] { nameof(ToAccountId) });

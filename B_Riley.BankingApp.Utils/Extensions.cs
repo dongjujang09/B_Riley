@@ -19,7 +19,7 @@ namespace B_Riley.BankingApp.Utils
             return JsonConvert.SerializeObject(obj, (indented ? Formatting.Indented : Formatting.None), jsonSettings);
         }
 
-        public static T Deserialize<T>(this string json)
+        public static T? Deserialize<T>(this string json)
         {
             return JsonConvert.DeserializeObject<T>(json);
         }
