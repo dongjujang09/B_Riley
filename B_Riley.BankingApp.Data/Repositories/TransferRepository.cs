@@ -86,12 +86,12 @@ namespace B_Riley.BankingApp.Data.Repositories
             return transfer;
         }
 
-        public override void Delete(Transfer transfer)
+        public override async Task DeleteAsync(Transfer transfer)
         {
             if (transfer == null) throw new ArgumentNullException(nameof(transfer));
             if (transfer.Id < 0) throw new ArgumentOutOfRangeException(nameof(transfer.Id));
 
-            base.Delete(transfer);
+            await base.DeleteAsync(transfer);
 
             // remove cache to refresh
             var cacheKey = string.Format(CACHEKEY_TRANSFER, transfer.Id);

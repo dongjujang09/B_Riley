@@ -46,13 +46,13 @@ namespace B_Riley.BankingApp.Data.Repositories
             return entity;
         }
 
-        public virtual void Delete(T entity)
+        public virtual async Task DeleteAsync(T entity)
         {
             if (entity == null) throw new ArgumentNullException(nameof(entity));
             if (entity.Id < 0) throw new ArgumentOutOfRangeException(nameof(entity.Id));
 
             Context.Remove(entity);
-            SaveChangesAsync();
+            await SaveChangesAsync();
         }
     }
 }
