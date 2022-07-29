@@ -5,15 +5,15 @@ VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "B_Riley.BankingApp.Web", "B_Riley.BankingApp.Web\B_Riley.BankingApp.Web.csproj", "{48021B03-508F-476A-859F-03F9419EECF8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "B_Riley.BankingApp.Data", "B_Riley.BankingApp.Data\B_Riley.BankingApp.Data.csproj", "{52359354-E481-463B-A667-B2EEEDD11364}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "B_Riley.BankingApp.Data", "B_Riley.BankingApp.Data\B_Riley.BankingApp.Data.csproj", "{52359354-E481-463B-A667-B2EEEDD11364}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "B_Riley.BankingApp.Models", "B_Riley.BankingApp.Models\B_Riley.BankingApp.Models.csproj", "{6B0865B8-EEFA-4103-A27B-6B7E66E4A4F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "B_Riley.BankingApp.Models", "B_Riley.BankingApp.Models\B_Riley.BankingApp.Models.csproj", "{6B0865B8-EEFA-4103-A27B-6B7E66E4A4F3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "B_Riley.BankingApp.Utils", "B_Riley.BankingApp.Utils\B_Riley.BankingApp.Utils.csproj", "{35B42005-DC1C-4F72-AD3B-55331A056498}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "B_Riley.BankingApp.Utils", "B_Riley.BankingApp.Utils\B_Riley.BankingApp.Utils.csproj", "{35B42005-DC1C-4F72-AD3B-55331A056498}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sql Scrits", "Sql Scrits", "{54340C0B-CB99-441D-99C0-762DAB31CA58}"
 	ProjectSection(SolutionItems) = preProject
-		InitialCreateTables.sql = InitialCreateTables.sql
+		Sql Scripts\InitialCreateTables.sql = Sql Scripts\InitialCreateTables.sql
 	EndProjectSection
 EndProject
 Global
