@@ -18,10 +18,10 @@ namespace B_Riley.BankingApp.Web.Controllers
         private readonly TransferRepository transferRepo;
         private readonly AccountRepository accountRepo;
 
-        public TransfersController(BankingAppContext context, IMemoryCache memoryCache)
+        public TransfersController(BankingAppContext context, IAppCache cache)
         {
-            this.transferRepo = new TransferRepository(context, new AppCache(memoryCache));
-            this.accountRepo = new AccountRepository(context, new AppCache(memoryCache));
+            this.transferRepo = new TransferRepository(context, cache);
+            this.accountRepo = new AccountRepository(context, cache);
         }
 
         // GET: Transfers

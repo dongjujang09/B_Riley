@@ -17,9 +17,9 @@ namespace B_Riley.BankingApp.Web.Controllers
     {
         private readonly AccountRepository accountRepo;
 
-        public AccountsController(BankingAppContext context, IMemoryCache memoryCache)
+        public AccountsController(BankingAppContext context, IAppCache cache)
         {
-            this.accountRepo = new AccountRepository(context, new AppCache(memoryCache));
+            this.accountRepo = new AccountRepository(context, cache);
         }
 
         // GET: Accounts

@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using B_Riley.BankingApp.Data;
+using B_Riley.BankingApp.Utils;
 
 namespace B_Riley.BankingApp.Web
 {
@@ -39,6 +40,8 @@ namespace B_Riley.BankingApp.Web
                 connectionString = connectionString.Replace("%CONTENTROOTPATH%", contentRootPath);
             }
             services.AddDbContext<BankingAppContext>(options => options.UseSqlServer(connectionString));
+
+            services.AddSingleton<IAppCache, AppCache>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
